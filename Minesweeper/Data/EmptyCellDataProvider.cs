@@ -26,7 +26,7 @@ namespace Minesweeper.Data
         public int Height => 10;
 
         /// <inheritdoc/>
-        public CellType this[int x, int y] => CellType.Empty;
+        public bool this[int x, int y] => false;
 
         /// <inheritdoc/>
         public void Press(int x, int y, MouseButton button)

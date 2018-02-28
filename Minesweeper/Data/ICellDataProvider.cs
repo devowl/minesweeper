@@ -24,19 +24,11 @@ namespace Minesweeper.Data
         int Height { get; }
 
         /// <summary>
-        /// Get cell index;
+        /// Get "Is bomb" info.
         /// </summary>
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
-        /// <returns>Cell type.</returns>
-        CellType this[int x, int y] { get; }
-
-        /// <summary>
-        /// User button press.
-        /// </summary>
-        /// <param name="x">X coordinate.</param>
-        /// <param name="y">Y coordinate.</param>
-        /// <param name="button">Pressed button.</param>
-        void Press(int x, int y, MouseButton button);
+        /// <returns>Is cell bomb.</returns>
+        bool this[int x, int y] { get; }
     }
 }

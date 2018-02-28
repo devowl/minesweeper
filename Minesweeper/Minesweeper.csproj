@@ -64,8 +64,11 @@
     <Compile Include="Controls\MineButton.cs" />
     <Compile Include="Controls\MineField.cs" />
     <Compile Include="Data\CellType.cs" />
+    <Compile Include="Data\DelegateCommand.cs" />
     <Compile Include="Data\EmptyCellDataProvider.cs" />
     <Compile Include="Data\ICellDataProvider.cs" />
+    <Compile Include="Data\CommonExtentions.cs" />
+    <Compile Include="Data\MineFieldLogic.cs" />
     <Compile Include="Data\StandardCellDataProvider.cs" />
     <Compile Include="Windows\ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Windows\Views\MainWindow.xaml.cs">
@@ -106,6 +109,7 @@
   <ItemGroup>
     <Resource Include="Images\ButtonTypes.bmp" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

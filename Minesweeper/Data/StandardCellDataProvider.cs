@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Input;
 
 namespace Minesweeper.Data
 {
@@ -8,17 +7,17 @@ namespace Minesweeper.Data
     /// </summary>
     public class StandardCellDataProvider : ICellDataProvider
     {
-        private readonly CellType[,] _bombs;
+        private readonly bool[,] _bombs;
 
         /// <summary>
         /// Constructor <see cref="EmptyCellDataProvider"/>.
         /// </summary>
         public StandardCellDataProvider(bool[,] sourceBombs)
         {
-            _bombs = CreateBombs(sourceBombs);
+            _bombs = sourceBombs;
             FieldId = Guid.NewGuid();
         }
-        
+
         /// <inheritdoc/>
         public Guid FieldId { get; }
 
@@ -29,52 +28,17 @@ namespace Minesweeper.Data
         public int Height => _bombs.GetLength(1);
 
         /// <inheritdoc/>
-        public CellType this[int x, int y] => _bombs[x, y];
-
-        /// <inheritdoc/>
-        public void Press(int x, int y, MouseButton button)
+        public bool this[int x, int y]
         {
-            var cellType = _bombs[x, y];
-            CellType newValue = cellType;
-
-            switch (cellType)
+            get
             {
-                case CellType.Button:
-                    break;
-                case CellType.Flagged:
-                    break;
-                case CellType.BombExplode:
-                    break;
-                case CellType.NoBomb:
-                    break;
-                case CellType.Bomb:
-                    if (button == MouseButton.Left)
-                    {
-                        newValue = CellType.BombExplode;
-                    }
-                    break;
-                case CellType.Empty:
-                    break;
-            }
-
-            _bombs[x, y] = newValue;
-        }
-
-        private static CellType[,] CreateBombs(bool[,] sourceBombs)
-        {
-            int sourceWidth = sourceBombs.GetLength(0), sourceHeight = sourceBombs.GetLength(1);
-            var result = new CellType[sourceWidth, sourceHeight];
-            for (int x = 0; x < sourceBombs.GetLength(0); x++)
-            {
-                for (int y = 0; y < sourceBombs.GetLength(1); y++)
+                if (x >= 0 && x < Width && y >= 0 && y < Height)
                 {
-                    var isBomb = sourceBombs[x, y];
-
-                    result[x, y] = isBomb ? CellType.Bomb : CellType.Empty;
+                    return _bombs[x, y];
                 }
-            }
 
-            return result;
+                return false;
+            }
         }
     }
 }
