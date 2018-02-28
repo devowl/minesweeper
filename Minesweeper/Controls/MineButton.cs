@@ -10,7 +10,7 @@ namespace Minesweeper.Controls
     /// <summary>
     /// Classic preview button.
     /// </summary>
-    public class MineButton : Button
+    public class MineButton : ContentControl
     {
         private const int ButtonImageOffsetStep = 16;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 
@@ -90,11 +91,62 @@ namespace Minesweeper.Data
         private void RightButtonClick(object parameter)
         {
             var info = ((ButtonInfo)parameter);
+            if (IsTwoButtonsClick)
+            {
+                ProcessTwoButtonsClick(info);
+                return;
+            }
+
+            InternalRightButtonClick(info);
+        }
+
+        private void InternalRightButtonClick(ButtonInfo info)
+        {
             if (info.Button.CurrentCellType == CellType.Button)
             {
                 info.Button.CurrentCellType = CellType.Flagged;
             }
         }
+
+        private void ProcessTwoButtonsClick(ButtonInfo info)
+        {
+            // if all bombs around are marked, then we do click on everyone button around
+            var realBombs = GetBombsAround(info.X, info.Y, (x, y) => CellDataProvider[x, y]);
+            var flaggedBombs = GetBombsAround(info.X, info.Y,
+                (x, y) =>
+                {
+                    if (CheckCellBound(x, y))
+                    {
+                        var infoButton = (ButtonInfo)_buttons[x, y].Tag;
+                        return infoButton.Button.CurrentCellType == CellType.Flagged;
+                    }
+
+                    return false;
+                });
+
+            if (realBombs == flaggedBombs)
+            {
+                GetBombsAround(
+                    info.X,
+                    info.Y,
+                    (x, y) =>
+                    {
+                        if (CheckCellBound(x, y))
+                        {
+                            var infoButton = (ButtonInfo)_buttons[x, y].Tag;
+                            if (infoButton.Button.CurrentCellType == CellType.Button)
+                            {
+                                InternalLeftButtonClick(infoButton);
+                            }
+                        }
+
+                        return true;
+                    });
+            }
+        }
+
+        private static bool IsTwoButtonsClick
+            => Mouse.LeftButton == MouseButtonState.Pressed && Mouse.RightButton == MouseButtonState.Pressed;
 
         /// <summary>
         /// Button left button click handler.
@@ -102,6 +154,17 @@ namespace Minesweeper.Data
         private void LeftButtonClick(object parameter)
         {
             var info = ((ButtonInfo)parameter);
+            if (IsTwoButtonsClick)
+            {
+                ProcessTwoButtonsClick(info);
+                return;
+            }
+
+            InternalLeftButtonClick(info);
+        }
+
+        private void InternalLeftButtonClick(ButtonInfo info)
+        {
             if (info.Button.CurrentCellType == CellType.Button)
             {
                 if (CellDataProvider[info.X, info.Y])
@@ -141,7 +204,8 @@ namespace Minesweeper.Data
             }
             else
             {
-                LeftButtonClick(info.Button.Tag);
+                info.Button.CurrentCellType = (CellType)Enum.Parse(typeof(CellType), $"Near{bombsAround}");
+                return;
             }
 
             GetBombsAround(

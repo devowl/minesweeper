@@ -31,7 +31,7 @@ namespace Minesweeper.Windows.ViewModels
                 for (int y = 0; y < randomField.GetLength(1); y++)
                 {
                     var randomNumber = random.Next(0, 100);
-                    if (randomNumber <= 14)
+                    if (randomNumber <= 7)
                     {
                         randomField[x, y] = true;
                     }

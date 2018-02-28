@@ -67,7 +67,7 @@ namespace Minesweeper.Controls
             _buttons.ForEach(
                 (button, x, y) =>
                 {
-                    if (CellDataProvider[x, y] && button.CurrentCellType != CellType.BombExplode)
+                    if (CellDataProvider[x, y] && button.CurrentCellType != CellType.BombExplode && button.CurrentCellType != CellType.Flagged)
                     {
                         button.CurrentCellType = CellType.Bomb;
                     }
