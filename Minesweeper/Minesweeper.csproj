@@ -61,15 +61,20 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Common\CommonExtentions.cs" />
+    <Compile Include="Common\EndType.cs" />
+    <Compile Include="Common\GameArgs.cs" />
     <Compile Include="Controls\MineButton.cs" />
     <Compile Include="Controls\MineField.cs" />
     <Compile Include="Data\CellType.cs" />
-    <Compile Include="Data\DelegateCommand.cs" />
     <Compile Include="Data\EmptyCellDataProvider.cs" />
     <Compile Include="Data\ICellDataProvider.cs" />
-    <Compile Include="Data\CommonExtentions.cs" />
     <Compile Include="Data\MineFieldLogic.cs" />
     <Compile Include="Data\StandardCellDataProvider.cs" />
+    <Compile Include="Prism\BindableBase.cs" />
+    <Compile Include="Prism\CallerMemberNameAttribute.cs" />
+    <Compile Include="Prism\DelegateCommand.cs" />
+    <Compile Include="Prism\PropertySupport.cs" />
     <Compile Include="Windows\ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Windows\Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

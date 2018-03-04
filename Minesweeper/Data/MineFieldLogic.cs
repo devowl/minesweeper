@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 
+using Minesweeper.Common;
 using Minesweeper.Controls;
+using Minesweeper.Prism;
 
 namespace Minesweeper.Data
 {
@@ -23,12 +25,7 @@ namespace Minesweeper.Data
             LeftButtonClickCommand = new DelegateCommand(LeftButtonClick);
             RightButtonClickCommand = new DelegateCommand(RightButtonClick);
         }
-
-        /// <summary>
-        /// Game over event.
-        /// </summary>
-        public event EventHandler<EventArgs> GameOver;
-
+        
         /// <summary>
         /// Current cell data provider.
         /// </summary>
@@ -88,6 +85,24 @@ namespace Minesweeper.Data
             return bombs.Where(isBomb => isBomb).Count();
         }
 
+        private void CheckEndGame()
+        {
+            bool anyClosed = false;
+            _buttons.ForEach(
+                (button, x, y) =>
+                {
+                    if (button.CurrentCellType == CellType.Button)
+                    {
+                        anyClosed = true;
+                    }
+                });
+
+            if (!anyClosed)
+            {
+                CellDataProvider.EndTypeUpdated(EndType.YouHaveWon);
+            }
+        }
+
         private void RightButtonClick(object parameter)
         {
             var info = ((ButtonInfo)parameter);
@@ -105,6 +120,10 @@ namespace Minesweeper.Data
             if (info.Button.CurrentCellType == CellType.Button)
             {
                 info.Button.CurrentCellType = CellType.Flagged;
+            }
+            else if(info.Button.CurrentCellType == CellType.Flagged)
+            {
+                info.Button.CurrentCellType = CellType.Button;
             }
         }
 
@@ -170,7 +189,7 @@ namespace Minesweeper.Data
                 if (CellDataProvider[info.X, info.Y])
                 {
                     info.Button.CurrentCellType = CellType.BombExplode;
-                    GameOver?.Invoke(this, EventArgs.Empty);
+                    CellDataProvider.EndTypeUpdated(EndType.YouHaveLost);
                 }
                 else
                 {

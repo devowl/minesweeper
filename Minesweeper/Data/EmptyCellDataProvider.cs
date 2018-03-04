@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Input;
 
+using Minesweeper.Common;
+
 namespace Minesweeper.Data
 {
     /// <summary>
@@ -29,7 +31,10 @@ namespace Minesweeper.Data
         public bool this[int x, int y] => false;
 
         /// <inheritdoc/>
-        public void Press(int x, int y, MouseButton button)
+        public event EventHandler<GameArgs> Gameover;
+
+        /// <inheritdoc/>
+        public void EndTypeUpdated(EndType endType)
         {
         }
     }

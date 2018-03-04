@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
+using Minesweeper.Common;
 using Minesweeper.Data;
 
 namespace Minesweeper.Controls
@@ -11,7 +12,7 @@ namespace Minesweeper.Controls
     /// </summary>
     public class MineField : Grid
     {
-        private const int DefaultCellSize = 24;
+        private const int DefaultCellSize = 16;
 
         /// <summary>
         /// <see cref="CellSize"/> dependency property.
@@ -58,10 +59,9 @@ namespace Minesweeper.Controls
         /// </summary>
         public MineField()
         {
-            _mineFieldLogic.GameOver += OnGameOver;
         }
 
-        private void OnGameOver(object sender, EventArgs e)
+        private void OnGameOver(object sender, GameArgs args)
         {
             IsGameOver = true;
             _buttons.ForEach(
@@ -126,6 +126,7 @@ namespace Minesweeper.Controls
                 CellDataProvider = new EmptyCellDataProvider();
             }
 
+            CellDataProvider.Gameover += OnGameOver;
             _mineFieldLogic.CellDataProvider = newProvider;
             DrawNewField();
         }

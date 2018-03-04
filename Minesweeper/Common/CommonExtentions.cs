@@ -2,7 +2,7 @@
 
 using Minesweeper.Controls;
 
-namespace Minesweeper.Data
+namespace Minesweeper.Common
 {
     /// <summary>
     /// Extentions container.

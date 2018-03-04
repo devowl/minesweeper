@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Minesweeper.Common;
+
 namespace Minesweeper.Data
 {
     /// <summary>
@@ -39,6 +41,15 @@ namespace Minesweeper.Data
 
                 return false;
             }
+        }
+
+        /// <inheritdoc/>
+        public event EventHandler<GameArgs> Gameover;
+
+        /// <inheritdoc/>
+        public void EndTypeUpdated(EndType endType)
+        {
+            Gameover?.Invoke(this, new GameArgs(endType));
         }
     }
 }

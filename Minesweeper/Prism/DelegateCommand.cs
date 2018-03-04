@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Minesweeper.Data
+namespace Minesweeper.Prism
 {
     /// <summary>
     /// Prism delegate command.

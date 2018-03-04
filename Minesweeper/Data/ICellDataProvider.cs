@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Windows.Input;
+
+using Minesweeper.Common;
 
 namespace Minesweeper.Data
 {
@@ -30,5 +31,16 @@ namespace Minesweeper.Data
         /// <param name="y">Y coordinate.</param>
         /// <returns>Is cell bomb.</returns>
         bool this[int x, int y] { get; }
+
+        /// <summary>
+        /// When game over, check event arguments.
+        /// </summary>
+        event EventHandler<GameArgs> Gameover;
+
+        /// <summary>
+        /// End type changed.
+        /// </summary>
+        /// <param name="endType"><see cref="EndType"/> reference.</param>
+        void EndTypeUpdated(EndType endType);
     }
 }
