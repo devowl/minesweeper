@@ -18,6 +18,17 @@ namespace Minesweeper.Data
         {
             _bombs = sourceBombs;
             FieldId = Guid.NewGuid();
+            BombsCount = 0;
+            for (int x = 0; x < sourceBombs.GetLength(0); x++)
+            {
+                for (int y = 0; y < sourceBombs.GetLength(1); y++)
+                {
+                    if (sourceBombs[x, y])
+                    {
+                        BombsCount++;
+                    }
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -42,6 +53,8 @@ namespace Minesweeper.Data
                 return false;
             }
         }
+
+        public int BombsCount { get; }
 
         /// <inheritdoc/>
         public event EventHandler<GameArgs> Gameover;

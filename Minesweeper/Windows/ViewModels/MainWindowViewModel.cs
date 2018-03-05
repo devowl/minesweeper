@@ -48,13 +48,13 @@ namespace Minesweeper.Windows.ViewModels
         private static ICellDataProvider CreateRandomizedField()
         {
             var random = new Random();
-            var randomField = new bool[13, 15];
+            var randomField = new bool[9, 9];
             for (int x = 0; x < randomField.GetLength(0); x++)
             {
                 for (int y = 0; y < randomField.GetLength(1); y++)
                 {
                     var randomNumber = random.Next(0, 100);
-                    if (randomNumber <= 7)
+                    if (randomNumber <= 14)
                     {
                         randomField[x, y] = true;
                     }

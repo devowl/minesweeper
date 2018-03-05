@@ -56,7 +56,7 @@ namespace Minesweeper.Controls
                 return (CellType)GetValue(CurrentCellTypeProperty);
             }
 
-            set
+            private set
             {
                 SetValue(CurrentCellTypeProperty, value);
             }
@@ -68,7 +68,7 @@ namespace Minesweeper.Controls
         /// <param name="cellType">New <see cref="CellType"/> value.</param>
         public void SetType(CellType cellType)
         {
-            if (CurrentCellType != cellType)
+            if (CurrentCellType == cellType)
             {
                 return;
             }

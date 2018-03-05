@@ -30,6 +30,8 @@ namespace Minesweeper.Data
         /// <inheritdoc/>
         public bool this[int x, int y] => false;
 
+        public int BombsCount => 0;
+
         /// <inheritdoc/>
         public event EventHandler<GameArgs> Gameover;
 

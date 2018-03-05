@@ -33,6 +33,11 @@ namespace Minesweeper.Data
         bool this[int x, int y] { get; }
 
         /// <summary>
+        /// How many bombs planted.
+        /// </summary>
+        int BombsCount { get; }
+
+        /// <summary>
         /// When game over, check event arguments.
         /// </summary>
         event EventHandler<GameArgs> Gameover;

@@ -63,15 +63,10 @@ namespace Minesweeper.Controls
 
         private void OnGameOver(object sender, GameArgs args)
         {
-            IsGameOver = true;
-            _buttons.ForEach(
-                (button, x, y) =>
-                {
-                    if (CellDataProvider[x, y] && button.CurrentCellType != CellType.BombExplode && button.CurrentCellType != CellType.Flagged)
-                    {
-                        button.CurrentCellType = CellType.Bomb;
-                    }
-                });
+            if (args.EndType == EndType.YouHaveLost || args.EndType == EndType.YouHaveWon)
+            {
+                IsGameOver = true;
+            }
         }
 
         /// <summary>
@@ -176,8 +171,8 @@ namespace Minesweeper.Controls
                 {
                     var button = new MineButton() { Width = CellSize, Height = CellSize };
                     Children.Add(button);
-                    SetColumn(button, i);
-                    SetRow(button, j);
+                    SetColumn(button, j);
+                    SetRow(button, i);
 
                     _buttons[i, j] = button;
                 }

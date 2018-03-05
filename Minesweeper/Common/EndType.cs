@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Minesweeper.Common
+﻿namespace Minesweeper.Common
 {
     /// <summary>
     /// End game type.
     /// </summary>
     public enum EndType
     {
+        /// <summary>
+        /// Any button pressed.
+        /// </summary>
+        ButtonPressed,
+
         /// <summary>
         /// You have lost the game.
         /// </summary>
@@ -18,6 +18,6 @@ namespace Minesweeper.Common
         /// <summary>
         /// You have lost the game.
         /// </summary>
-        YouHaveWon, 
+        YouHaveWon,
     }
 }
