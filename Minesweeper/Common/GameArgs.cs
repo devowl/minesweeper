@@ -10,10 +10,16 @@ namespace Minesweeper.Common
         /// <summary>
         /// <see cref="GameArgs"/> constructor.
         /// </summary>
-        public GameArgs(EndType endType)
+        public GameArgs(EndType endType, int flagged)
         {
             EndType = endType;
+            Flagged = flagged;
         }
+
+        /// <summary>
+        /// Flagged cells.
+        /// </summary>
+        public int Flagged { get; private set; }
 
         /// <summary>
         /// End game type.

@@ -5,15 +5,77 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Minesweeper"
         xmlns:controls="clr-namespace:Minesweeper.Controls"
-        mc:Ignorable="d" WindowStyle="ToolWindow" SizeToContent="WidthAndHeight"
-        ResizeMode="NoResize"
-        Title="MainWindow" d:DataContext="{d:DesignInstance}">
+        xmlns:viewModels="clr-namespace:Minesweeper.Windows.ViewModels"
+        mc:Ignorable="d" SizeToContent="WidthAndHeight"
+        ResizeMode="CanMinimize"
+        Title="Minesweeper" d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}" x:Key="EmotionButtonStyle">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <ContentControl>
+                            <Grid>
+                                <Border Name="PressedBorder" Background="Bisque" BorderBrush="Gray" BorderThickness="1,1,2,2">
+                                    <ContentPresenter/>
+                                </Border>
+                                <Border Name="NormalBorder" Background="Aqua" BorderBrush="Black"  BorderThickness="2"/>
+                            </Grid>
+                        </ContentControl>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Button.IsPressed" Value="True" >
+                                <Setter TargetName="NormalBorder" Property="BorderBrush" Value="Transparent" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="F2"
+                    Command="{Binding NewGameCommand}" />
+    </Window.InputBindings>
     <StackPanel>
         <Menu>
             <MenuItem Header="Game">
                 <MenuItem Header="New" Command="{Binding NewGameCommand}"/>
+                <Separator />
+                <MenuItem Header="Beginner" Command="{Binding BeginnerCommand}" />
+                <MenuItem Header="Intermediate" Command="{Binding IntermediateCommand}" />
+                <MenuItem Header="Expert" Command="{Binding ExpertCommand}" />
+                <Separator />
+                <MenuItem Header="Exit" Command="{Binding ExitCommand}" />
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="About" Command="{Binding AboutCommand}"/>
             </MenuItem>
         </Menu>
-        <controls:MineField CellDataProvider="{Binding DataProvider}" />
+        <Border BorderThickness="3 3 0 0" BorderBrush="White">
+            <StackPanel Background="LightGray">
+
+                <Border Margin="6" BorderBrush="DarkGray" BorderThickness="2,2,0,0" ClipToBounds="True" >
+                    <Border BorderBrush="White" BorderThickness="0 0 2 2">
+                        <Grid Margin="6" Height="25">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <controls:CounterControl Number="{Binding BombsLeft}" />
+                            <Button Grid.Column="1" Style="{StaticResource EmotionButtonStyle}"/>
+                            <controls:CounterControl Number="{Binding SecondsGone}" Grid.Column="2" />
+                        </Grid>
+                    </Border>
+                </Border>
+                
+                <Border Margin="6 2 6 6" BorderBrush="DarkGray" BorderThickness="3,3,0,0" ClipToBounds="True" >
+                    <Border BorderBrush="White" BorderThickness="0 0 3 3">
+                        <controls:MineField CellDataProvider="{Binding DataProvider}" />
+                    </Border>
+                </Border>
+            </StackPanel>
+        </Border>
     </StackPanel>
 </Window>

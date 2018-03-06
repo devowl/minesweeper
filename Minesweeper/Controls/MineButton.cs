@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -25,7 +26,7 @@ namespace Minesweeper.Controls
                 new PropertyMetadata(CellType.Button, CellTypeChanged));
 
         private static readonly BitmapSource ButtonTypesImageSource;
-
+        
         static MineButton()
         {
             ButtonTypesImageSource =
@@ -38,12 +39,6 @@ namespace Minesweeper.Controls
         public MineButton()
         {
             DataContext = this;
-        }
-
-        protected override void OnInitialized(EventArgs e)
-        {
-            base.OnInitialized(e);
-            UpdateButtonImage();
         }
 
         /// <summary>
@@ -76,6 +71,12 @@ namespace Minesweeper.Controls
             CurrentCellType = cellType;
         }
 
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+            UpdateButtonImage();
+        }
+
         private static void CellTypeChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
         {
             if (args.OldValue != args.NewValue)
@@ -83,7 +84,7 @@ namespace Minesweeper.Controls
                 ((MineButton)dependencyObject).UpdateButtonImage();
             }
         }
-        
+
         private static Image GetCroppedBitmap(CellType cellType)
         {
             int offset = (int)cellType;
@@ -91,7 +92,7 @@ namespace Minesweeper.Controls
                 ButtonTypesImageSource,
                 new Int32Rect(0, offset * ButtonImageOffsetStep, ButtonImageOffsetStep, ButtonImageOffsetStep));
 
-            return new Image() { Source = bitmap };
+            return new Image { Source = bitmap };
         }
 
         private void UpdateButtonImage()

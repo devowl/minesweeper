@@ -36,7 +36,7 @@ namespace Minesweeper.Data
         public event EventHandler<GameArgs> Gameover;
 
         /// <inheritdoc/>
-        public void EndTypeUpdated(EndType endType)
+        public void EndTypeUpdated(EndType endType, int flagged)
         {
         }
     }

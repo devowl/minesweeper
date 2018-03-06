@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Timers;
 using System.Windows;
 
 using Minesweeper.Common;
 using Minesweeper.Data;
 using Minesweeper.Prism;
+using Minesweeper.Windows.Views;
 
 namespace Minesweeper.Windows.ViewModels
 {
@@ -12,15 +15,83 @@ namespace Minesweeper.Windows.ViewModels
     /// </summary>
     public class MainWindowViewModel : BindableBase
     {
+        private readonly IDictionary<CurrentMode, Func<ICellDataProvider>> _fieldGenerator;
+
+        private readonly Timer _timer;
+
         private ICellDataProvider _dataProvider;
+
+        private CurrentMode _currentMode = CurrentMode.Beginner;
+
+        private int _bombsLeft;
+
+        private int _secondsGone;
 
         /// <summary>
         /// Constructor <see cref="MainWindowViewModel"/>.
         /// </summary>
         public MainWindowViewModel()
         {
-            DataProvider = CreateRandomizedField();
-            NewGameCommand = new DelegateCommand(NewGameClick);
+            _timer = new Timer(1000);
+            _timer.Elapsed += (sender, args) => SecondsGone++;
+            _fieldGenerator = new Dictionary<CurrentMode, Func<ICellDataProvider>>
+            {
+                { CurrentMode.Beginner, () => CreateRandomizedField(9, 9, 10) },
+                { CurrentMode.Intermediate, () => CreateRandomizedField(16, 16, 40) },
+                { CurrentMode.Expert, () => CreateRandomizedField(30, 16, 90) }
+            };
+
+            NewGameCommand = new DelegateCommand(p => NewGame());
+            BeginnerCommand = new DelegateCommand(p => NewGame(CurrentMode.Beginner));
+            IntermediateCommand = new DelegateCommand(p => NewGame(CurrentMode.Intermediate));
+            ExpertCommand = new DelegateCommand(p => NewGame(CurrentMode.Expert));
+            ExitCommand = new DelegateCommand(p => Application.Current.Shutdown());
+            AboutCommand = new DelegateCommand(AboutClick);
+
+            NewGame();
+        }
+
+        private enum CurrentMode
+        {
+            Beginner,
+
+            Intermediate,
+
+            Expert
+        }
+
+        /// <summary>
+        /// How many bombs left.
+        /// </summary>
+        public int BombsLeft
+        {
+            get
+            {
+                return _bombsLeft;
+            }
+
+            set
+            {
+                _bombsLeft = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Seconds gone from begin.
+        /// </summary>
+        public int SecondsGone
+        {
+            get
+            {
+                return _secondsGone;
+            }
+
+            set
+            {
+                _secondsGone = value;
+                RaisePropertyChanged();
+            }
         }
 
         /// <summary>
@@ -29,13 +100,38 @@ namespace Minesweeper.Windows.ViewModels
         public DelegateCommand NewGameCommand { get; private set; }
 
         /// <summary>
+        /// New game beginner command.
+        /// </summary>
+        public DelegateCommand BeginnerCommand { get; private set; }
+
+        /// <summary>
+        /// New game intermediate command.
+        /// </summary>
+        public DelegateCommand IntermediateCommand { get; private set; }
+
+        /// <summary>
+        /// New game expert command.
+        /// </summary>
+        public DelegateCommand ExpertCommand { get; private set; }
+
+        /// <summary>
+        /// Exit command.
+        /// </summary>
+        public DelegateCommand ExitCommand { get; private set; }
+
+        /// <summary>
+        /// About command.
+        /// </summary>
+        public DelegateCommand AboutCommand { get; private set; }
+        
+        /// <summary>
         /// Mines field data provider.
         /// </summary>
         public ICellDataProvider DataProvider
         {
             get
             {
-                return _dataProvider; 
+                return _dataProvider;
             }
 
             private set
@@ -45,20 +141,34 @@ namespace Minesweeper.Windows.ViewModels
             }
         }
 
-        private static ICellDataProvider CreateRandomizedField()
+        private void AboutClick(object obj)
+        {
+            var aboutWindow = new AboutWindow()
+            {
+                Owner = Application.Current.MainWindow,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+            aboutWindow.ShowDialog();
+        }
+
+        private ICellDataProvider CreateRandomizedField(int width, int height, int bombs)
         {
             var random = new Random();
-            var randomField = new bool[9, 9];
-            for (int x = 0; x < randomField.GetLength(0); x++)
+            var randomField = new bool[height, width];
+
+            for (int i = 0; i < bombs; i++)
             {
-                for (int y = 0; y < randomField.GetLength(1); y++)
+                do
                 {
-                    var randomNumber = random.Next(0, 100);
-                    if (randomNumber <= 14)
+                    int randomX = random.Next(0, width);
+                    int randomY = random.Next(0, height);
+
+                    if (!randomField[randomY, randomX])
                     {
-                        randomField[x, y] = true;
+                        randomField[randomY, randomX] = true;
+                        break;
                     }
-                }
+                } while (true);
             }
 
             var provider = new StandardCellDataProvider(randomField);
@@ -66,21 +176,46 @@ namespace Minesweeper.Windows.ViewModels
             return provider;
         }
 
-        private static void OnGameover(object sender, GameArgs gameArgs) 
+        private void OnGameover(object sender, GameArgs gameArgs)
         {
+            if (gameArgs.EndType == EndType.ButtonPressed)
+            {
+                BombsLeft = DataProvider.BombsCount - gameArgs.Flagged;
+
+                if (!_timer.Enabled)
+                {
+                    _timer.Start();
+                }
+            }
+
             if (gameArgs.EndType == EndType.YouHaveWon)
             {
+                _timer.Stop();
                 MessageBox.Show("You have won! Congratulations!");
             }
             else if (gameArgs.EndType == EndType.YouHaveLost)
             {
+                _timer.Stop();
                 MessageBox.Show("You lose, try again!");
             }
         }
 
-        private void NewGameClick(object obj)
+        private void NewGame(CurrentMode newMode)
         {
-            DataProvider = CreateRandomizedField();
+            _currentMode = newMode;
+            NewGame();
+        }
+
+        private void NewGame()
+        {
+            if (DataProvider != null)
+            {
+                DataProvider.Gameover -= OnGameover;
+            }
+
+            DataProvider = _fieldGenerator[_currentMode]();
+            SecondsGone = 0;
+            BombsLeft = DataProvider.BombsCount;
         }
     }
 }

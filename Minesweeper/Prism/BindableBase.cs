@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
+using System.Windows.Threading;
 
 namespace Minesweeper.Prism
 {
@@ -94,7 +95,14 @@ namespace Minesweeper.Prism
         /// <param name="args">The PropertyChangedEventArgs</param>
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs args)
         {
-            PropertyChanged?.Invoke(this, args);
+            if (Dispatcher.CurrentDispatcher.CheckAccess())
+            {
+                PropertyChanged?.Invoke(this, args);
+            }
+            else
+            {
+                Dispatcher.CurrentDispatcher.Invoke(new Action(() => PropertyChanged?.Invoke(this, args)));
+            }
         }
 
         /// <summary>

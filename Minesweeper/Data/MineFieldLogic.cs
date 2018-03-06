@@ -108,24 +108,7 @@ namespace Minesweeper.Data
         private void CheckGameStatus()
         {
             bool anyClosed = false;
-
-            _buttons.ForEach(
-                (button, x, y) =>
-                {
-                    if (button.CurrentCellType == CellType.Button)
-                    {
-                        anyClosed = true;
-                    }
-                });
-
-            if (anyClosed)
-            {
-                CellDataProvider.EndTypeUpdated(EndType.ButtonPressed);
-                return;
-            }
-
             int foundedBombs = 0;
-            int closedFields = 0;
             _buttons.ForEach(
                 (button, x, y) =>
                 {
@@ -136,6 +119,24 @@ namespace Minesweeper.Data
 
                     if (button.CurrentCellType == CellType.Button)
                     {
+                        anyClosed = true;
+                    }
+                });
+
+            if (anyClosed)
+            {
+                CellDataProvider.EndTypeUpdated(EndType.ButtonPressed, foundedBombs);
+                return;
+            }
+
+            
+            int closedFields = 0;
+            
+            _buttons.ForEach(
+                (button, x, y) =>
+                {
+                    if (button.CurrentCellType == CellType.Button)
+                    {
                         closedFields++;
                     }
                 });
@@ -143,7 +144,7 @@ namespace Minesweeper.Data
             if (foundedBombs == CellDataProvider.BombsCount && closedFields == 0)
             {
                 // Show up all bombs. You have won
-                CellDataProvider.EndTypeUpdated(EndType.YouHaveWon);
+                CellDataProvider.EndTypeUpdated(EndType.YouHaveWon, 0);
             }
         }
 
@@ -234,7 +235,7 @@ namespace Minesweeper.Data
                 if (CellDataProvider[info.X, info.Y])
                 {
                     info.Button.SetType(CellType.BombExplode);
-                    CellDataProvider.EndTypeUpdated(EndType.YouHaveLost);
+                    CellDataProvider.EndTypeUpdated(EndType.YouHaveLost, 0);
                 }
                 else
                 {

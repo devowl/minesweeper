@@ -11,6 +11,8 @@ namespace Minesweeper.Data
     {
         private readonly bool[,] _bombs;
 
+        private bool _gameOver = false;
+
         /// <summary>
         /// Constructor <see cref="EmptyCellDataProvider"/>.
         /// </summary>
@@ -60,9 +62,19 @@ namespace Minesweeper.Data
         public event EventHandler<GameArgs> Gameover;
 
         /// <inheritdoc/>
-        public void EndTypeUpdated(EndType endType)
+        public void EndTypeUpdated(EndType endType, int flagged)
         {
-            Gameover?.Invoke(this, new GameArgs(endType));
+            if (_gameOver)
+            {
+                return;
+            }
+
+            if (endType != EndType.ButtonPressed)
+            {
+                _gameOver = true;
+            }
+
+            Gameover?.Invoke(this, new GameArgs(endType, flagged));
         }
     }
 }

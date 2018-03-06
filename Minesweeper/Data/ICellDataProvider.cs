@@ -46,6 +46,7 @@ namespace Minesweeper.Data
         /// End type changed.
         /// </summary>
         /// <param name="endType"><see cref="EndType"/> reference.</param>
-        void EndTypeUpdated(EndType endType);
+        /// <param name="flagged">Flagged fields.</param>
+        void EndTypeUpdated(EndType endType, int flagged);
     }
 }
