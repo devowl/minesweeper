@@ -36,6 +36,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -72,6 +74,7 @@
     <Compile Include="Controls\MineButton.cs" />
     <Compile Include="Controls\MineField.cs" />
     <Compile Include="Data\CellType.cs" />
+    <Compile Include="Data\EmotionType.cs" />
     <Compile Include="Data\EmptyCellDataProvider.cs" />
     <Compile Include="Data\ICellDataProvider.cs" />
     <Compile Include="Data\MineFieldLogic.cs" />
@@ -81,6 +84,7 @@
     <Compile Include="Prism\CallerMemberNameAttribute.cs" />
     <Compile Include="Prism\DelegateCommand.cs" />
     <Compile Include="Prism\PropertySupport.cs" />
+    <Compile Include="Windows\Behaviors\EmotionButtonBehavior.cs" />
     <Compile Include="Windows\ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Windows\Views\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>

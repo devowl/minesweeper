@@ -27,6 +27,8 @@ namespace Minesweeper.Windows.ViewModels
 
         private int _secondsGone;
 
+        private EmotionType _currentEmotionType;
+
         /// <summary>
         /// Constructor <see cref="MainWindowViewModel"/>.
         /// </summary>
@@ -123,7 +125,24 @@ namespace Minesweeper.Windows.ViewModels
         /// About command.
         /// </summary>
         public DelegateCommand AboutCommand { get; private set; }
-        
+
+        /// <summary>
+        /// Current emotion type.
+        /// </summary>
+        public EmotionType CurrentEmotionType
+        {
+            get
+            {
+                return _currentEmotionType;
+            }
+
+            set
+            {
+                _currentEmotionType = value;
+                RaisePropertyChanged();
+            }
+        }
+
         /// <summary>
         /// Mines field data provider.
         /// </summary>
@@ -191,12 +210,12 @@ namespace Minesweeper.Windows.ViewModels
             if (gameArgs.EndType == EndType.YouHaveWon)
             {
                 _timer.Stop();
-                MessageBox.Show("You have won! Congratulations!");
+                CurrentEmotionType = EmotionType.Win;
             }
             else if (gameArgs.EndType == EndType.YouHaveLost)
             {
                 _timer.Stop();
-                MessageBox.Show("You lose, try again!");
+                CurrentEmotionType = EmotionType.Lose;
             }
         }
 
@@ -213,6 +232,7 @@ namespace Minesweeper.Windows.ViewModels
                 DataProvider.Gameover -= OnGameover;
             }
 
+            CurrentEmotionType = EmotionType.Common;
             DataProvider = _fieldGenerator[_currentMode]();
             SecondsGone = 0;
             BombsLeft = DataProvider.BombsCount;

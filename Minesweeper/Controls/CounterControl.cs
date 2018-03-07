@@ -45,7 +45,7 @@ namespace Minesweeper.Controls
                 new PropertyMetadata(0, NumberChangedCallback));
         }
 
-        public static bool InDesignMode()
+        private static bool InDesignMode()
         {
             return !(Application.Current is App);
         }
