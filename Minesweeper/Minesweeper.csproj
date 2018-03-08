@@ -86,7 +86,6 @@
     <Compile Include="Prism\CallerMemberNameAttribute.cs" />
     <Compile Include="Prism\DelegateCommand.cs" />
     <Compile Include="Prism\PropertySupport.cs" />
-    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Windows\ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Windows\Views\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>

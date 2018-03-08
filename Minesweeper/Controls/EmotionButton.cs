@@ -6,7 +6,6 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-using Minesweeper.Annotations;
 using Minesweeper.Common;
 using Minesweeper.Data;
 
@@ -115,8 +114,7 @@ namespace Minesweeper.Controls
                 SetValue(ParentWindowProperty, value);
             }
         }
-
-        [NotifyPropertyChangedInvocator]
+        
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
