@@ -128,7 +128,7 @@ namespace Minesweeper.Controls
 
         private ControlTemplate CreateButtonTemplate()
         {
-            var imageFactory = new FrameworkElementFactory(typeof(Image));
+            var imageFactory = new FrameworkElementFactory(typeof(Image), "EmotionImage");
             imageFactory.SetBinding(
                 Image.SourceProperty,
                 new Binding(nameof(ImageSource))
@@ -137,6 +137,16 @@ namespace Minesweeper.Controls
                 });
 
             var controlTemplate = new ControlTemplate { VisualTree = imageFactory };
+
+            var pressedTrigger = new Trigger { Property = IsPressedProperty, Value = true };
+            pressedTrigger.Setters.Add(new Setter()
+            {
+                TargetName = "EmotionImage",
+                Property = Image.SourceProperty,
+                Value = GetEmotionImageSource(EmotionType.Pressed)
+            });
+
+            controlTemplate.Triggers.Add(pressedTrigger);
             return controlTemplate;
         }
 
@@ -158,15 +168,26 @@ namespace Minesweeper.Controls
 
         private void MousePressed()
         {
-            _imageSourceBefore = ImageSource;
-            ImageSource = GetEmotionImageSource(EmotionType.PressDown);
+            if (!IsFinilizedState)
+            {
+                _imageSourceBefore = ImageSource;
+                ImageSource = GetEmotionImageSource(EmotionType.PressDown);
+            }
         }
 
         private void MouseReleased()
         {
-            if (_imageSourceBefore != null)
+            if (_imageSourceBefore != null && !IsFinilizedState)
             {
                 ImageSource = _imageSourceBefore;
+            }
+        }
+
+        private bool IsFinilizedState
+        {
+            get
+            {
+                return EmotionTypeValue == EmotionType.Lose || EmotionTypeValue == EmotionType.Win;
             }
         }
     }
