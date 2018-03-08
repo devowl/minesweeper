@@ -236,6 +236,7 @@ namespace Minesweeper.Windows.ViewModels
             DataProvider = _fieldGenerator[_currentMode]();
             SecondsGone = 0;
             BombsLeft = DataProvider.BombsCount;
+            _timer.Stop();
         }
     }
 }

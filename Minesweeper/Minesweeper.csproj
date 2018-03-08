@@ -70,7 +70,9 @@
     <Compile Include="Common\CommonExtentions.cs" />
     <Compile Include="Common\EndType.cs" />
     <Compile Include="Common\GameArgs.cs" />
+    <Compile Include="Common\SharedUtils.cs" />
     <Compile Include="Controls\CounterControl.cs" />
+    <Compile Include="Controls\EmotionButton.cs" />
     <Compile Include="Controls\MineButton.cs" />
     <Compile Include="Controls\MineField.cs" />
     <Compile Include="Data\CellType.cs" />
@@ -84,7 +86,7 @@
     <Compile Include="Prism\CallerMemberNameAttribute.cs" />
     <Compile Include="Prism\DelegateCommand.cs" />
     <Compile Include="Prism\PropertySupport.cs" />
-    <Compile Include="Windows\Behaviors\EmotionButtonBehavior.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Windows\ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Windows\Views\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>

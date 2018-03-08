@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
+using Minesweeper.Common;
 using Minesweeper.Data;
 
 namespace Minesweeper.Controls
@@ -30,13 +31,13 @@ namespace Minesweeper.Controls
         /// </summary>
         static CounterControl()
         {
-            if (InDesignMode())
+            if (SharedUtils.InDesignMode())
             {
                 return;
             }
 
             NumbersImageSource =
-                new BitmapImage(new Uri("pack://application:,,,/Images/Numbers.bmp", UriKind.RelativeOrAbsolute));
+                new BitmapImage(SharedUtils.NumbersUri);
 
             NumberProperty = DependencyProperty.Register(
                 nameof(Number),
@@ -44,18 +45,13 @@ namespace Minesweeper.Controls
                 typeof(CounterControl),
                 new PropertyMetadata(0, NumberChangedCallback));
         }
-
-        private static bool InDesignMode()
-        {
-            return !(Application.Current is App);
-        }
-
+        
         /// <summary>
         /// <see cref="CounterControl"/> constructor.
         /// </summary>
         public CounterControl()
         {
-            if (InDesignMode())
+            if (SharedUtils.InDesignMode())
             {
                 return;
             }

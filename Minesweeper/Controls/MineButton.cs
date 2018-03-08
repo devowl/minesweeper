@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
+using Minesweeper.Common;
 using Minesweeper.Data;
 
 namespace Minesweeper.Controls
@@ -29,8 +30,13 @@ namespace Minesweeper.Controls
         
         static MineButton()
         {
+            if (SharedUtils.InDesignMode())
+            {
+                return;
+            }
+
             ButtonTypesImageSource =
-                new BitmapImage(new Uri("pack://application:,,,/Images/ButtonTypes.bmp", UriKind.RelativeOrAbsolute));
+                new BitmapImage(SharedUtils.ButtonTypeUri);
         }
 
         /// <summary>
